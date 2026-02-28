@@ -1,5 +1,8 @@
 (ns lisst
-  (:require [pg.core :as pg]))
+  (:require [pg.core :as pg])
+  (:use compojure.core)
+  (:require [compojure.handler :as handler]
+            [compojure.route :as route]))
 
 (def config
   {:host "localhost" :database "lisst" :user "dannewcome"})
@@ -17,3 +20,12 @@
             "insert into list (name) values ('test')")
 (pg/execute conn
             "insert into list (name) values ('test2')")
+
+
+(defroutes app-routes
+  (GET "/" [] "Hello World")
+  (route/resources "/")
+  (route/not-found "Not Found"))
+
+(def app
+  (handler/site app-routes))
